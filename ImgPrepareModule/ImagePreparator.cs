@@ -23,6 +23,7 @@
             }
         }
 
+
         private Monochrome _monochromeFilter = new();
         private Grayscale _grayscaleFilter = new();
         private Mininum _mininumFilter = new();

@@ -1,6 +1,4 @@
-﻿using System.Drawing.Imaging;
-
-namespace Лаба_5.ImgPrepareModule
+﻿namespace Лаба_5.ImgPrepareModule
 {
     public class Monochrome
     {
@@ -31,6 +29,5 @@ namespace Лаба_5.ImgPrepareModule
 
             return monoImage;
         }
-
     }
 }

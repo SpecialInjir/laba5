@@ -134,23 +134,46 @@ namespace CG_Lab5
             LoadBitmap(newb);
             var n = _imagePreparator.ConvertToMonochrome(_bitmap);
             LoadBitmap(n);
-           
+            //var nc = _imagePreparator.MorphologicalDilationF(_bitmap);
+            //LoadBitmap(nc);
+
             var results = _analyzer.Analyze(n, _db);
+            int k = 0;
+            int percent = 65;
+            while (results == null && k <= 3)
+            {
+               
+                results = _analyzer.Analyze(n, _db, percent);
+                k++;
+                percent -= 10;
+            }
             var pen = new Pen(Color.Red, 3);
 
             var brush = new SolidBrush(Color.Red);
             var img = results.OrderByDescending(x => x.SimularPercent).FirstOrDefault();
             var img2 = results.OrderByDescending(x => x.SimularPercent).FirstOrDefault(x => x.ImgName != img.ImgName);
             var img3 = results.OrderByDescending(x => x.SimularPercent).FirstOrDefault(x => x.ImgName != img.ImgName && x.ImgName != img2.ImgName);
-            foreach (var res in results)
+            int offset = 0;
+            foreach (var res in results.Distinct())
             {
+                //Rectangle rect = new Rectangle(res.x, res.y, res.Bitmap.Width, res.Bitmap.Height);
+                //_graphics.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+                //_graphics.DrawString(
+                //    res.ImgName + " " + res.SimularPercent + "%",
+                //    DefaultFont,
+                //    brush,
+                //    new Point(rect.Right, rect.Bottom)
+                //);
+                int x = res.Blob.Rectangle.Right -20;
+                int y = res.Blob.Rectangle.Bottom + offset;
                 _graphics.DrawRectangle(pen, res.Blob.Rectangle);
                 _graphics.DrawString(
                     res.ImgName + " " + res.SimularPercent + "%",
                     DefaultFont,
                     brush,
-                    new Point(res.Blob.Rectangle.Right, res.Blob.Rectangle.Bottom)
-                );
+                    new Point(x, y)
+                ) ;
+               // offset += 20;
             }
 
             LoadBitmap(n);
